@@ -16,3 +16,16 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.containerindex {
+    position: relative;
+    text-align: center;
+    color: lightsalmon;
+}
+
+.centeredindex {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
