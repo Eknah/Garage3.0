@@ -28,6 +28,20 @@ namespace Garage3._0.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Parkings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VehicleId = table.Column<int>(type: "int", nullable: true),
+                    ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Parkings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "VehicleType",
                 columns: table => new
                 {
@@ -85,6 +99,9 @@ namespace Garage3._0.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Parkings");
+
             migrationBuilder.DropTable(
                 name: "Vehicle");
 
