@@ -13,7 +13,7 @@ namespace Garage3._0.Core
     {
         public int Id { get; set; }
         [Required]
-        [StringLength(10, ErrorMessage = "Person number must be 10 characters", MinimumLength = 10)]
+        [StringLength(12, ErrorMessage = "Person number must be 10 characters", MinimumLength = 12)]
         public string PersonNumber { get; set; }
         [Required]
         [DisplayName("First Name")]
