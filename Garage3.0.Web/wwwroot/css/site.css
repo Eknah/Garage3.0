@@ -17,15 +17,22 @@ body {
   margin-bottom: 60px;
 }
 
-.containerindex {
-    position: relative;
-    text-align: center;
-    color: lightsalmon;
+.bgimg {
+    background-image: url('https://www.ledsuniverse.com/wp-content/uploads/2019/02/vehicles-in-dark-parking-garage-are-more-susceptible-to-robbery.jpg');
+    height: 400px;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
 }
 
-.centeredindex {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.header {
+    text-align: center;
+    color: #ffffff;
+}
+
+.textindex {
+    text-align: center;
+    color: #ffffff;
+    font-size: larger;
+    
 }
