@@ -23,7 +23,7 @@ namespace Garage3._0.Data
 			var memberships = GenerateMemberships(50);
 			await db.AddRangeAsync(memberships);
 
-			var vehicleTypes = GenerateVehicleTypes(50);
+			var vehicleTypes = GenerateVehicleTypes();
 			await db.AddRangeAsync(vehicleTypes);
 
 			await db.SaveChangesAsync();
@@ -107,7 +107,7 @@ namespace Garage3._0.Data
 			return vehicles;
 		}
 
-		private static IEnumerable<VehicleType> GenerateVehicleTypes(int numberOfVehicleTypes)
+		private static IEnumerable<VehicleType> GenerateVehicleTypes()
 		{
 			var vehicleTypes = new List<VehicleType>();
 
@@ -133,8 +133,8 @@ namespace Garage3._0.Data
 				var dateOfBirth = p.DateOfBirth;
 
 				var years = dateOfBirth.Year.ToString();
-				var month = dateOfBirth.Month.ToString();
-				var day = dateOfBirth.Day.ToString();
+				var month = dateOfBirth.Month.ToString("00");
+				var day = dateOfBirth.Day.ToString("00");
 				var last4ArrDigits = p.Random.Digits(4, 0, 9);
 
 				string last4 = String.Empty;
@@ -153,7 +153,6 @@ namespace Garage3._0.Data
 				memberships.Add(new Membership()
 				{
 					PersonNumber = personNumber,
-					//PersonNumber = 123,
 					Name = firstName,
 					LastName = lastName,
 					Email = email,
