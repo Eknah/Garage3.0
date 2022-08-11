@@ -142,7 +142,7 @@ namespace Garage3._0.Data
 				foreach (var digit in last4ArrDigits!)
 					last4 += digit;
 
-				var personNumber = $"{years.Substring(2)}{month}{day}{last4}";
+				var personNumber = $"{years}{month}{day}{last4}";
 
 				var email = p.Email;
 
