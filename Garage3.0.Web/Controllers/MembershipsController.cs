@@ -39,7 +39,7 @@ namespace Garage3._0.Web.Controllers
 
 			var allMemberViewModels = await _context.Membership.Select(m => new MembershipsOverviewViewModel() { MembershipId = m.Id, FullName = $"{m.Name} {m.LastName}", NumRegVehicles = m.Vehicles.Count, MembershipType = m.Pro ? "Pro" : "Regular" }).ToListAsync();
 
-			var filteredMemberViewModels = allMemberViewModels.Where(m => m.FullName.StartsWith(fullName));
+			var filteredMemberViewModels = allMemberViewModels.Where(m => m.FullName.ToUpper().StartsWith(fullName.ToUpper()));
 
 
 			return View(nameof(Overview), filteredMemberViewModels);
