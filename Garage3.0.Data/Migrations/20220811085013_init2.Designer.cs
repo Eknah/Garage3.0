@@ -4,6 +4,7 @@ using Garage3._0.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3._0.Data.Migrations
 {
     [DbContext(typeof(GarageContext))]
-    partial class GarageContextModelSnapshot : ModelSnapshot
+    [Migration("20220811085013_init2")]
+    partial class init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,8 +46,8 @@ namespace Garage3._0.Data.Migrations
 
                     b.Property<string>("PersonNumber")
                         .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<bool>("Pro")
                         .HasColumnType("bit");
