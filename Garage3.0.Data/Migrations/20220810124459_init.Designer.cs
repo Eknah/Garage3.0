@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3._0.Data.Migrations
 {
     [DbContext(typeof(GarageContext))]
-    [Migration("20220810100333_init")]
+    [Migration("20220810124459_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,6 +53,25 @@ namespace Garage3._0.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Membership");
+                });
+
+            modelBuilder.Entity("Garage3._0.Core.Parking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("ArrivalTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Parkings");
                 });
 
             modelBuilder.Entity("Garage3._0.Core.Vehicle", b =>

@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Garage3.0.Core\Garage3.0.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
