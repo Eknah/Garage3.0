@@ -20,6 +20,11 @@ namespace Garage3._0.Web.Controllers
             _context = context;
         }
 
+        public IActionResult MemberShipRegister()
+        {
+            return View();
+        }
+
         // GET: Memberships
         public async Task<IActionResult> Overview()
         {
