@@ -18,6 +18,10 @@ namespace Garage3._0.Web.Controllers
         {
             _context = context;
         }
+        public IActionResult RegisterVehicle()
+        {
+            return View();
+        }
 
         // GET: Vehicles
         public async Task<IActionResult> Index()
@@ -46,27 +50,30 @@ namespace Garage3._0.Web.Controllers
         }
 
         // GET: Vehicles/Create
-        public IActionResult Create()
-        {
-            ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "Id");
-            return View();
-        }
+        //public IActionResult Create()
+        //{
+        //    ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "Id");
+        //    return View();
+        //}
 
         // POST: Vehicles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MembershipId,VehicleTypeId,Fuel,Wheels,Brand,RegistrationNumber,Colour")] Vehicle vehicle)
+        public async Task<IActionResult> Create(Vehicle vehicle)
         {
+            var member  = await _context.Membership.FirstOrDefaultAsync();
+            vehicle.MembershipId = member.Id;
+
             if (ModelState.IsValid)
             {
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Home");
             }
-            ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "Id", vehicle.VehicleTypeId);
-            return View(vehicle);
+            //ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "Id", vehicle.VehicleTypeId);
+            return View(nameof(RegisterVehicle), vehicle);
         }
 
         // GET: Vehicles/Edit/5
