@@ -27,7 +27,6 @@ namespace Garage3._0.Core
         [StringLength(12, ErrorMessage = "{0} length must be between {2} & {0}.", MinimumLength = 2)]
         [DisplayName("Color")]
 		public string Color { get; set; }
-        [Required]
         [DisplayName("Vehicle Type")]
 		public VehicleType VehicleType { get; set; }
 
