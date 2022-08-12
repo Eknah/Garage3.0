@@ -22,6 +22,14 @@ namespace Garage3._0.Web.Controllers
         {
             return View();
         }
+        public IActionResult UnParkView()
+        {
+            return View();
+        }
+        public IActionResult VehicleView()
+        {
+            return View();
+        }
 
         // GET: Vehicles
         public async Task<IActionResult> Index()
