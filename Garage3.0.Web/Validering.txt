@@ -1,0 +1,101 @@
+﻿/*******************Ticket***********************/
+
+//(år, mån, dag,tim,min,sek)
+// DateTime inPark = new DateTime(2022, 8, 10, 10, 15, 10); 
+// TimeSpan mindate=DateTime.Now.Subtract(inPark);
+
+// int totalMinutes=0;
+// int totalPrice=0;
+
+// Console.WriteLine("Day: " + mindate.Days); 
+// Console.WriteLine("HOURS: " + mindate.Hours +" minutes: "+ mindate.Minutes); 
+
+// if(mindate.Days == 0)
+// {
+//     totalMinutes=mindate.Hours * 60 + mindate.Minutes;
+//     totalPrice=totalMinutes*10/60;
+// }
+// else if(mindate.Days > 0)
+// {
+//     totalMinutes=mindate.Hours * 60 + mindate.Minutes;
+//     totalPrice=mindate.Days*100+totalMinutes*10/60;
+// }
+// Console.WriteLine("Pris: " + totalPrice);
+/****************************Ticket*****************/
+
+/*************Social security number/**********************/
+//string str = "198112189871";
+//int sumWithControlGigit = 0;
+//int sumWithoutControlDigit = 0;
+//int tempDigit = 0;
+//char[] ch = new char[str.Length];
+//int controlDigit = 0;
+
+//for (int i = 2; i < str.Length; i++)
+//{
+//    ch[i] = str[i];
+//    if (i % 2 == 0)
+//    {
+//        tempDigit = int.Parse(ch[i].ToString()) * 2;
+//        if (tempDigit >= 10)
+//        {
+//            sumWithControlGigit += 1 + tempDigit % 10;
+//            if (i != 11)
+//                sumWithoutControlDigit = sumWithControlGigit;
+//            if (i == 11)
+//                controlDigit = tempDigit;
+//        }
+//        else
+//        {
+//            sumWithControlGigit += tempDigit;
+//            if (i != 11)
+//                sumWithoutControlDigit = sumWithControlGigit;
+//            if (i == 11)
+//                controlDigit = tempDigit;
+//        }
+//    }
+//    else if (i % 2 == 1)
+//    {
+//        tempDigit = int.Parse(ch[i].ToString());
+//        if (i == 11)
+//            controlDigit = tempDigit;
+//        sumWithControlGigit += tempDigit;
+//        if (i != 11)
+//            sumWithoutControlDigit = sumWithControlGigit;
+
+//    }
+//}
+//Console.WriteLine("LastDigit: " + controlDigit);
+//Console.WriteLine("Control number: " + (10 - (sumWithoutControlDigit % 10)) % 10);
+//Console.WriteLine("Sum With Control number: " + sumWithControlGigit);
+//Console.WriteLine("Sum Without Control number: " + sumWithoutControlDigit);
+
+//if ((10 - (sumWithoutControlDigit % 10)) % 10 == controlDigit)
+//{
+//    Console.WriteLine("Correct");
+//}
+//else if ((10 - (sumWithoutControlDigit % 10)) % 10 != controlDigit)
+//{
+//    Console.WriteLine("Wrong");
+//}
+/*************Social security number/**********************/
+
+
+
+/***********************Age*******************************/
+
+string securityNumber = "201512189876";
+string myYear=securityNumber.Substring(0,4);
+string myMounth = securityNumber.Substring(4,2);
+string myDay=securityNumber.Substring(6,2);
+string myDate = myYear + "/"+ myMounth + "/" + myDay;
+Console.WriteLine(myDate);
+DateTime  myAge= Convert.ToDateTime(myDate);
+
+int age = DateTime.Now.Year - myAge.Year;
+if (DateTime.Now.DayOfYear < myAge.DayOfYear)
+   age = age - 1;
+
+Console.WriteLine("Age: "+age);
+
+/***********************Age*******************************/

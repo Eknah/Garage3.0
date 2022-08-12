@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Garage3._0.Data;
+using Garage3._0.Web.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<GarageContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GarageContext") ?? throw new InvalidOperationException("Connection string 'GarageContext' not found.")));
@@ -8,6 +10,7 @@ builder.Services.AddDbContext<GarageContext>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IVehicleTypeSelectListService, VehicleTypeSelectListService>();
 var app = builder.Build();
 
 // Seeddata
