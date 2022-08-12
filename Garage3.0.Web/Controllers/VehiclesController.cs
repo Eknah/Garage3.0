@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Garage3._0.Core;
 using Garage3._0.Data;
+using Garage3._0.Web.Models.ViewModels;
 
 namespace Garage3._0.Web.Controllers
 {
@@ -26,9 +27,31 @@ namespace Garage3._0.Web.Controllers
         {
             return View();
         }
-        public IActionResult VehicleView()
+        public async Task<IActionResult> VehicleView()
         {
-            return View();
+			var viewModel = await _context.Vehicle.Select(v => new VehicleViewViewModel()
+			{
+				Name = v.Membership.Name,
+				LastName=v.Membership.LastName,
+				RegistrationNumber = v.RegistrationNumber,
+				VehicleType = v.VehicleType,
+				MembershipId =v.Membership.Id,
+				ArrivalTime = DateTime.Now
+			}).ToListAsync();
+
+			return _context.Membership != null ?
+						View(viewModel) :
+						Problem("Entity set 'GarageContext.Vehicle'  is null.");
+
+			//var viewModel = await _context.Membership.Select(m => new MembershipsOverviewViewModel() { MembershipId = m.Id, FullName = $"{m.Name} {m.LastName}", NumRegVehicles = m.Vehicles.Count, MembershipType = m.Pro ? "Pro" : "Regular" }).ToListAsync();
+
+			//var sortedViewModel = viewModel.OrderBy(m => m.FullName.Substring(0, 2), StringComparer.Ordinal);
+
+			//return _context.Membership != null ?
+			//			View(sortedViewModel) :
+			//			Problem("Entity set 'GarageContext.Membership'  is null.");
+
+			//return View();
         }
 
         // GET: Vehicles
