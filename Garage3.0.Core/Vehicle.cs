@@ -29,6 +29,7 @@ namespace Garage3._0.Core
 		public string Color { get; set; }
         [DisplayName("Vehicle Type")]
 		public VehicleType VehicleType { get; set; }
+		public Membership Membership { get; set; }
 
 
 
