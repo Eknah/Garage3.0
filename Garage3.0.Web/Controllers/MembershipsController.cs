@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Garage3._0.Core;
 using Garage3._0.Data;
+using Garage3._0.Web.Models.ViewModels;
 
 namespace Garage3._0.Web.Controllers
 {
@@ -19,8 +20,13 @@ namespace Garage3._0.Web.Controllers
             _context = context;
         }
 
+        public IActionResult MemberShipRegister()
+        {
+            return View();
+        }
+
         // GET: Memberships
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Overview()
         {
             return _context.Membership != null ? View(await _context.Membership.ToListAsync()) : Problem("Entity set 'GarageContext.Membership'  is null.");
            
@@ -168,7 +174,7 @@ namespace Garage3._0.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Overview));
             }
             return View(membership);
         }
@@ -207,7 +213,7 @@ namespace Garage3._0.Web.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Overview));
         }
 
         private bool MembershipExists(int id)
