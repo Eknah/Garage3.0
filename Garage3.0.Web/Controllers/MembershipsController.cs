@@ -22,11 +22,47 @@ namespace Garage3._0.Web.Controllers
         // GET: Memberships
         public async Task<IActionResult> Index()
         {
-              return _context.Membership != null ? 
-                          View(await _context.Membership.ToListAsync()) :
-                          Problem("Entity set 'GarageContext.Membership'  is null.");
+            return _context.Membership != null ? View(await _context.Membership.ToListAsync()) : Problem("Entity set 'GarageContext.Membership'  is null.");
+           
         }
 
+        public IActionResult CheckMember()
+        {
+            return View();
+        }
+
+        
+       public IActionResult SearchMember(Membership ms)
+        {
+            if (_context.Membership?.FirstOrDefault(v => v.PersonNumber == ms.PersonNumber) == null && ms.PersonNumber.Length == 12)
+            {
+                return View("Create");
+            }
+            else if (_context.Membership?.FirstOrDefault(v => v.PersonNumber == ms.PersonNumber) != null && ms.PersonNumber.Length == 12)
+            {
+                //var membership = await _context.Membership.FindAsync(ms.Id);
+                var membership = _context.Membership
+                    .Where(v => v.PersonNumber == ms.PersonNumber);
+                //.ToList();
+                string FName="" , LName="",Id="";
+                foreach (var name in membership)
+                {
+                    FName = name.Name;
+                    LName = name.LastName;
+                    Id = name.Id.ToString();
+
+                }
+                TempData["Message"] = "WELCOME " + FName.ToUpper()+ " " + LName.ToUpper();
+                TempData["PersonId"] = Id;
+                return View("CheckMember");
+            }
+            else
+            {
+                return View("CheckMember");
+            }
+        }
+
+       
         // GET: Memberships/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -60,11 +96,30 @@ namespace Garage3._0.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(membership);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (_context.Membership?.FirstOrDefault(v => v.PersonNumber == membership.PersonNumber.ToUpper()) != null)
+                {
+                    ViewBag.LicenseNumberExists = true;
+                    return View(membership);
+                }
+                else
+                {
+                    membership.RegistrationDate = DateTime.Now;
+                    membership.PersonNumber = membership.PersonNumber.ToUpper();
+                    _context.Add(membership);
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = membership.Name.ToUpper()+" "+membership.LastName + " has been added as member.";
+                    //return RedirectToAction(nameof(Index));
+                }
             }
             return View(membership);
+
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(membership);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //return View(membership);
         }
 
         // GET: Memberships/Edit/5

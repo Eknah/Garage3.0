@@ -18,7 +18,7 @@ using (var scope = app.Services.CreateScope())
 {
 	var db = scope.ServiceProvider.GetRequiredService<GarageContext>();
 
-	db.Database.EnsureDeleted();
+	//db.Database.EnsureDeleted();
 	db.Database.Migrate();
 
 	try

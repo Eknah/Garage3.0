@@ -1,0 +1,47 @@
+﻿@model Garage3._0.Core.Membership
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container ">
+    <div class="row pt-4">
+        <div class="col-12">
+           <div class="display-6">
+             Control of your membership. <br> Write your social security number.
+           </div>
+         </div>
+    </div>
+
+    
+@if (TempData["Message"] != null)
+{
+     <div class="row pt-4">
+        <div class="col-12">
+	       <div class="alert alert-primary text-center">
+	          <strong>@TempData["Message"]</strong>
+	       </div>
+        </div>
+    </div>
+}    <div class="row pt-4">
+          <div class="col-md-4">
+              <form asp-action="SearchMember">
+               <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+               <div class="form-group">
+                <label asp-for="PersonNumber" class="control-label"></label>
+                <input asp-for="PersonNumber" class="form-control" />
+                <span asp-validation-for="PersonNumber" class="text-danger"></span>
+               </div>
+           
+               <div class="form-group pt-5">
+                <input type="submit" value="Search" class="btn btn-primary" />
+               </div>
+             </form>
+          </div>
+          <div>
+              <a asp-controller="Vehicles" asp-action="SearchMemberInVehicleTable" asp-route-id="@TempData["PersonId"]">Your Vehicles</a>
+          </div>
+     </div>
+ </div>
+   

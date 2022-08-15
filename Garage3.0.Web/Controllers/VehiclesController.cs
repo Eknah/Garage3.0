@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Garage3._0.Core;
 using Garage3._0.Data;
+using Garage3._0.Web.Models;
+
+
+
 
 namespace Garage3._0.Web.Controllers
 {
@@ -24,6 +29,28 @@ namespace Garage3._0.Web.Controllers
         {
             var garageContext = _context.Vehicle.Include(v => v.VehicleType);
             return View(await garageContext.ToListAsync());
+        }
+
+
+        public IActionResult SearchMemberInVehicleTable(string id)
+        {
+            if (_context.Vehicle?.FirstOrDefault(v => v.MembershipId == Int32.Parse(id)) == null)
+            {
+                TempData["Message"] = "You do not have any registered Vehicle.";
+                return View("Create");
+            }
+            else if (_context.Vehicle?.FirstOrDefault(v => v.MembershipId == Int32.Parse(id)) != null)
+            {
+                //var membership = await _context.Membership.FindAsync(ms.Id);
+                var membershipId = _context.Vehicle
+                    .Where(v => v.MembershipId == Int32.Parse(id))
+                .ToList();    
+                return View("RegisterVehicles");
+            }
+            else
+            {
+                return View("RegisteredVehicles");
+            }
         }
 
         // GET: Vehicles/Details/5
@@ -74,7 +101,8 @@ namespace Garage3._0.Web.Controllers
         {
             if (id == null || _context.Vehicle == null)
             {
-                return NotFound();
+                return View("RegisteredVehicles");
+                //return NotFound();
             }
 
             var vehicle = await _context.Vehicle.FindAsync(id);
@@ -146,6 +174,7 @@ namespace Garage3._0.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            Parking vm = new Parking();
             if (_context.Vehicle == null)
             {
                 return Problem("Entity set 'GarageContext.Vehicle'  is null.");
@@ -157,7 +186,8 @@ namespace Garage3._0.Web.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View("Receipt",vm);
+            //return RedirectToAction(nameof(Index));
         }
 
         private bool VehicleExists(int id)

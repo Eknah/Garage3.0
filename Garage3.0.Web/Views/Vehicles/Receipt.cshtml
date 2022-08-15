@@ -1,0 +1,50 @@
+﻿@model Garage3._0.Core.Parking
+
+@{
+    ViewData["Title"] = "Unpark";
+}
+ 
+@{
+    DateTime arrivalTime = Model.ArrivalTime;
+    int pricePerHour = 10;
+    int totMinutes = 0;
+    int totPrice = 0;
+    TimeSpan mindate = DateTime.Now.Subtract(arrivalTime);
+    int parkHours=mindate.Hours;
+    int parkMinutes = mindate.Minutes;
+    if(mindate.Days == 0)
+    {
+        totMinutes=mindate.Hours * 60 + mindate.Minutes;
+        totPrice=mindate.Hours * 60 + mindate.Minutes;
+    }
+    else if(mindate.Days > 0)
+    {
+        totMinutes=mindate.Hours * 60 + mindate.Minutes;
+        totPrice=mindate.Days*100+totMinutes*10/60;
+    }
+    
+    
+
+}
+
+<div class="container p-5 bg-primary text-white">
+    
+  <div class="header"><H3>Receipt</H3>
+    <div class="row text-center">
+       <div class="col-12  p-5">
+           <h3>Parked Vehicle: @Html.DisplayFor(model => model.VehicleId)<br />Time of Arrival: @Html.DisplayFor(model => model.ArrivalTime)</h3>
+       </div>
+    </div>
+    <div class="border border-1">  
+       <div class="row">
+           <div class="col-4  p-5"><h3>Days: @mindate.Days</h3></div>
+           <div class="col-4  p-5"><h3>Hours: @parkHours</h3></div>
+           <div class="col-4 text-start p-5"><h3>Minutes: @parkMinutes</h3></div>
+       </div>
+       <div class="row">
+            <div class="col-12  text-center p-5"><H3>Price: @totPrice Kr</H3></div>
+       </div>   
+       
+    </div>
+  </div>
+</div>

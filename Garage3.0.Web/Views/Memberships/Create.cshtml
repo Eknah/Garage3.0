@@ -4,6 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
+    
 <h1>Create</h1>
 
 <h4>Membership</h4>
@@ -31,16 +32,6 @@
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegistrationDate" class="control-label"></label>
-                <input asp-for="RegistrationDate" class="form-control" />
-                <span asp-validation-for="RegistrationDate" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Pro" /> @Html.DisplayNameFor(model => model.Pro)
-                </label>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
