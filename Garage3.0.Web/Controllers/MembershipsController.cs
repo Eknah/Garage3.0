@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Garage3._0.Core;
 using Garage3._0.Data;
+using Garage3._0.Web.Models.ViewModels;
 
 namespace Garage3._0.Web.Controllers
 {
@@ -19,16 +20,38 @@ namespace Garage3._0.Web.Controllers
             _context = context;
         }
 
-        // GET: Memberships
-        public async Task<IActionResult> Index()
+        public IActionResult MemberShipRegister()
         {
-              return _context.Membership != null ? 
-                          View(await _context.Membership.ToListAsync()) :
-                          Problem("Entity set 'GarageContext.Membership'  is null.");
+            return View();
         }
 
-        // GET: Memberships/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Memberships
+        public async Task<IActionResult> Overview()
+        {
+			var viewModel = await _context.Membership.Select(m => new MembershipsOverviewViewModel() { MembershipId = m.Id, FullName = $"{m.Name} {m.LastName}", NumRegVehicles = m.Vehicles.Count, MembershipType = m.Pro ? "Pro" : "Regular" }).ToListAsync();
+
+			var sortedViewModel = viewModel.OrderBy(m => m.FullName.Substring(0, 2), StringComparer.Ordinal);
+
+			return _context.Membership != null ?
+						View(sortedViewModel) :
+						Problem("Entity set 'GarageContext.Membership'  is null.");
+		}
+
+		public async Task<IActionResult> Filter(string fullName)
+		{
+			if (string.IsNullOrWhiteSpace(fullName))
+				return View(nameof(Overview));
+
+			var allMemberViewModels = await _context.Membership.Select(m => new MembershipsOverviewViewModel() { MembershipId = m.Id, FullName = $"{m.Name} {m.LastName}", NumRegVehicles = m.Vehicles.Count, MembershipType = m.Pro ? "Pro" : "Regular" }).ToListAsync();
+
+			var filteredMemberViewModels = allMemberViewModels.Where(m => m.FullName.ToUpper().StartsWith(fullName.ToUpper()));
+
+
+			return View(nameof(Overview), filteredMemberViewModels);
+		}
+
+		// GET: Memberships/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Membership == null)
             {
@@ -62,7 +85,7 @@ namespace Garage3._0.Web.Controllers
             {
                 _context.Add(membership);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Overview));
             }
             return View(membership);
         }
@@ -113,7 +136,7 @@ namespace Garage3._0.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Overview));
             }
             return View(membership);
         }
@@ -152,7 +175,7 @@ namespace Garage3._0.Web.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Overview));
         }
 
         private bool MembershipExists(int id)

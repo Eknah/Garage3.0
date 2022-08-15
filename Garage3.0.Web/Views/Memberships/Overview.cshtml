@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Garage3._0.Web.Models.ViewModels.MembershipsOverviewViewModel>
+
+@{
+    ViewData["Title"] = "Vehicle Overview";
+}
+
+<form asp-action="Filter" asp-controller="Memberships" method="get">
+    <div class="input-group mb-3">
+         <input type="text" class="form-control" name="fullName" placeholder="Search on name..." />
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-search">&emsp;Search</i></button>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumRegVehicles)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MembershipType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumRegVehicles)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MembershipType)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.MembershipId">Go to profile</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -18,16 +18,6 @@ namespace Garage3._0.Web.Controllers
 			return View();
 		}
 
-		public IActionResult MemberShipRegister()
-		{
-			return View();
-		}
-
-		public IActionResult RegisterVehicle()
-        {
-			return View();
-        }
-
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{
