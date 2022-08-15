@@ -30,5 +30,7 @@ namespace Garage3._0.Core
         [DisplayName("Vehicle Type")]
 		public VehicleType VehicleType { get; set; }
 
+
+
 	}
 }
