@@ -28,9 +28,14 @@ namespace Garage3._0.Web.Controllers
         // GET: Memberships
         public async Task<IActionResult> Overview()
         {
-            return _context.Membership != null ? View(await _context.Membership.ToListAsync()) : Problem("Entity set 'GarageContext.Membership'  is null.");
-           
-        }
+			var viewModel = await _context.Membership.Select(m => new MembershipsOverviewViewModel() { MembershipId = m.Id, FullName = $"{m.Name} {m.LastName}", NumRegVehicles = m.Vehicles.Count, MembershipType = m.Pro ? "Pro" : "Regular" }).ToListAsync();
+
+			var sortedViewModel = viewModel.OrderBy(m => m.FullName.Substring(0, 2), StringComparer.Ordinal);
+
+			return _context.Membership != null ?
+						View(sortedViewModel) :
+						Problem("Entity set 'GarageContext.Membership'  is null.");
+		}
 
         public IActionResult CheckMember()
         {
