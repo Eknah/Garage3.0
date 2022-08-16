@@ -33,7 +33,20 @@ namespace Garage3._0.Web.Controllers
 						Problem("Entity set 'GarageContext.Membership'  is null.");
 		}
 
-        public IActionResult CheckMember()
+		public async Task<IActionResult> Filter(string fullName)
+		{
+			if (string.IsNullOrWhiteSpace(fullName))
+				return View(nameof(Overview));
+
+			var allMemberViewModels = await _context.Membership.Select(m => new MembershipsOverviewViewModel() { MembershipId = m.Id, FullName = $"{m.Name} {m.LastName}", NumRegVehicles = m.Vehicles.Count, MembershipType = m.Pro ? "Pro" : "Regular" }).ToListAsync();
+
+			var filteredMemberViewModels = allMemberViewModels.Where(m => m.FullName.ToUpper().StartsWith(fullName.ToUpper()));
+
+
+			return View(nameof(Overview), filteredMemberViewModels);
+		}
+
+		public IActionResult CheckMember()
         {
             return View();
         }
