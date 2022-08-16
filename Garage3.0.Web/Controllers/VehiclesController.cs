@@ -84,10 +84,12 @@ namespace Garage3._0.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MembershipId,VehicleTypeId,Fuel,Wheels,Brand,RegistrationNumber,Colour")] Vehicle vehicle)
+        public async Task<IActionResult> Create(Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
+				vehicle.MembershipId = 1;
+				vehicle.VehicleTypeId = 1;
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
