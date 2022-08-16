@@ -23,40 +23,6 @@ namespace Garage3._0.Web.Controllers
         {
             _context = context;
         }
-        public IActionResult RegisterVehicle()
-        {
-            return View();
-        }
-        public IActionResult UnParkView()
-        {
-            return View();
-        }
-        public async Task<IActionResult> VehicleView()
-        {
-			var viewModel = await _context.Vehicle.Select(v => new VehicleViewViewModel()
-			{
-				Name = v.Membership.Name,
-				LastName=v.Membership.LastName,
-				RegistrationNumber = v.RegistrationNumber,
-				VehicleType = v.VehicleType,
-				MembershipId =v.Membership.Id,
-				ArrivalTime = DateTime.Now
-			}).ToListAsync();
-
-			return _context.Membership != null ?
-						View(viewModel) :
-						Problem("Entity set 'GarageContext.Vehicle'  is null.");
-
-			//var viewModel = await _context.Membership.Select(m => new MembershipsOverviewViewModel() { MembershipId = m.Id, FullName = $"{m.Name} {m.LastName}", NumRegVehicles = m.Vehicles.Count, MembershipType = m.Pro ? "Pro" : "Regular" }).ToListAsync();
-
-			//var sortedViewModel = viewModel.OrderBy(m => m.FullName.Substring(0, 2), StringComparer.Ordinal);
-
-			//return _context.Membership != null ?
-			//			View(sortedViewModel) :
-			//			Problem("Entity set 'GarageContext.Membership'  is null.");
-
-			//return View();
-        }
 
         // GET: Vehicles
         public async Task<IActionResult> Index()
@@ -107,30 +73,27 @@ namespace Garage3._0.Web.Controllers
         }
 
         // GET: Vehicles/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "Id");
-        //    return View();
-        //}
+        public IActionResult Create()
+        {
+            ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "Id");
+            return View();
+        }
 
         // POST: Vehicles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Vehicle vehicle)
+        public async Task<IActionResult> Create([Bind("Id,MembershipId,VehicleTypeId,Fuel,Wheels,Brand,RegistrationNumber,Colour")] Vehicle vehicle)
         {
-            var member  = await _context.Membership.FirstOrDefaultAsync();
-            vehicle.MembershipId = member.Id;
-
             if (ModelState.IsValid)
             {
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), "Home");
+                return RedirectToAction(nameof(Index));
             }
-            //ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "Id", vehicle.VehicleTypeId);
-            return View(nameof(RegisterVehicle), vehicle);
+            ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "Id", vehicle.VehicleTypeId);
+            return View(vehicle);
         }
 
         // GET: Vehicles/Edit/5
@@ -209,16 +172,15 @@ namespace Garage3._0.Web.Controllers
         // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string registrationNumber)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             Parking vm = new Parking();
             if (_context.Vehicle == null)
             {
                 return Problem("Entity set 'GarageContext.Vehicle'  is null.");
             }
-			//var vehicle = await _context.Vehicle.FindAsync(123);
-			var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.RegistrationNumber == registrationNumber);
-			if (vehicle != null)
+            var vehicle = await _context.Vehicle.FindAsync(id);
+            if (vehicle != null)
             {
                 _context.Vehicle.Remove(vehicle);
             }

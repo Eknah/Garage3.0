@@ -4,6 +4,7 @@ using Garage3._0.Data;
 using Garage3._0.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddDbContext<GarageContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GarageContext") ?? throw new InvalidOperationException("Connection string 'GarageContext' not found.")));
 
@@ -14,11 +15,11 @@ builder.Services.AddScoped<IVehicleTypeSelectListService, VehicleTypeSelectListS
 var app = builder.Build();
 
 // Seeddata
-using (var scope = app.Services.CreateScope())
+/*using (var scope = app.Services.CreateScope())
 {
 	var db = scope.ServiceProvider.GetRequiredService<GarageContext>();
 
-	//db.Database.EnsureDeleted();
+	db.Database.EnsureDeleted();
 	db.Database.Migrate();
 
 	try
@@ -31,7 +32,7 @@ using (var scope = app.Services.CreateScope())
 		logger.LogError(string.Join(" ", e.Message));
 		//throw;
 	}
-}
+}*/
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
