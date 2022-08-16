@@ -28,30 +28,49 @@ namespace Garage3._0.Web.Controllers
         // GET: Memberships
         public async Task<IActionResult> Overview()
         {
-			var viewModel = await _context.Membership.Select(m => new MembershipsOverviewViewModel() { MembershipId = m.Id, FullName = $"{m.Name} {m.LastName}", NumRegVehicles = m.Vehicles.Count, MembershipType = m.Pro ? "Pro" : "Regular" }).ToListAsync();
+            return _context.Membership != null ? View(await _context.Membership.ToListAsync()) : Problem("Entity set 'GarageContext.Membership'  is null.");
+           
+        }
 
-			var sortedViewModel = viewModel.OrderBy(m => m.FullName.Substring(0, 2), StringComparer.Ordinal);
+        public IActionResult CheckMember()
+        {
+            return View();
+        }
 
-			return _context.Membership != null ?
-						View(sortedViewModel) :
-						Problem("Entity set 'GarageContext.Membership'  is null.");
-		}
+        
+       public IActionResult SearchMember(Membership ms)
+        {
+            if (_context.Membership?.FirstOrDefault(v => v.PersonNumber == ms.PersonNumber) == null && ms.PersonNumber.Length == 12)
+            {
+                return View("Create");
+            }
+            else if (_context.Membership?.FirstOrDefault(v => v.PersonNumber == ms.PersonNumber) != null && ms.PersonNumber.Length == 12)
+            {
+                //var membership = await _context.Membership.FindAsync(ms.Id);
+                var membership = _context.Membership
+                    .Where(v => v.PersonNumber == ms.PersonNumber);
+                //.ToList();
+                string FName="" , LName="",Id="";
+                foreach (var name in membership)
+                {
+                    FName = name.Name;
+                    LName = name.LastName;
+                    Id = name.Id.ToString();
 
-		public async Task<IActionResult> Filter(string fullName)
-		{
-			if (string.IsNullOrWhiteSpace(fullName))
-				return View(nameof(Overview));
+                }
+                TempData["Message"] = "WELCOME " + FName.ToUpper()+ " " + LName.ToUpper();
+                TempData["PersonId"] = Id;
+                return View("CheckMember");
+            }
+            else
+            {
+                return View("CheckMember");
+            }
+        }
 
-			var allMemberViewModels = await _context.Membership.Select(m => new MembershipsOverviewViewModel() { MembershipId = m.Id, FullName = $"{m.Name} {m.LastName}", NumRegVehicles = m.Vehicles.Count, MembershipType = m.Pro ? "Pro" : "Regular" }).ToListAsync();
-
-			var filteredMemberViewModels = allMemberViewModels.Where(m => m.FullName.ToUpper().StartsWith(fullName.ToUpper()));
-
-
-			return View(nameof(Overview), filteredMemberViewModels);
-		}
-
-		// GET: Memberships/Details/5
-		public async Task<IActionResult> Details(int? id)
+       
+        // GET: Memberships/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Membership == null)
             {
@@ -83,11 +102,30 @@ namespace Garage3._0.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(membership);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Overview));
+                if (_context.Membership?.FirstOrDefault(v => v.PersonNumber == membership.PersonNumber.ToUpper()) != null)
+                {
+                    ViewBag.LicenseNumberExists = true;
+                    return View(membership);
+                }
+                else
+                {
+                    membership.RegistrationDate = DateTime.Now;
+                    membership.PersonNumber = membership.PersonNumber.ToUpper();
+                    _context.Add(membership);
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = membership.Name.ToUpper()+" "+membership.LastName + " has been added as member.";
+                    //return RedirectToAction(nameof(Index));
+                }
             }
             return View(membership);
+
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(membership);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //return View(membership);
         }
 
         // GET: Memberships/Edit/5
