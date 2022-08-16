@@ -20,7 +20,7 @@ namespace Garage3._0.Data
 
 			faker = new Faker("sv");
 
-			var memberships = GenerateMemberships(50);
+			var memberships = GenerateMemberships(5);
 			await db.AddRangeAsync(memberships);
 
 			var vehicleTypes = GenerateVehicleTypes();
@@ -28,12 +28,12 @@ namespace Garage3._0.Data
 
 			await db.SaveChangesAsync();
 
-			var vehicles = GenerateVehicles(50, memberships, vehicleTypes);
+			var vehicles = GenerateVehicles(5, memberships, vehicleTypes);
 			await db.AddRangeAsync(vehicles);
 
 			await db.SaveChangesAsync();
 
-			var parkings = GenerateParkings(50, vehicles);
+			var parkings = GenerateParkings(5, vehicles);
 			await db.AddRangeAsync(parkings);
 
 			await db.SaveChangesAsync();

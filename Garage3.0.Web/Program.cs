@@ -15,7 +15,7 @@ builder.Services.AddScoped<IVehicleTypeSelectListService, VehicleTypeSelectListS
 var app = builder.Build();
 
 // Seeddata
-/*using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
 	var db = scope.ServiceProvider.GetRequiredService<GarageContext>();
 
@@ -32,7 +32,7 @@ var app = builder.Build();
 		logger.LogError(string.Join(" ", e.Message));
 		//throw;
 	}
-}*/
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
